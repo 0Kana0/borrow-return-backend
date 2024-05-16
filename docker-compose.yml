@@ -16,6 +16,7 @@ services:
             TZ: 'Asia/Bangkok' 
         volumes:
             - '.:/var/www/html'
+            - /path/on/host:/path/in/container
         networks:
             - sail
 
