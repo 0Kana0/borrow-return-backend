@@ -19,9 +19,6 @@ return new class extends Migration
             $table->string('fullbatterycapacity')->nullable();
             $table->string('currentbatterycapacity')->nullable();
             $table->string('diskperformance')->nullable();
-            $table->date('fullbatterycapacitydate')->nullable();
-            $table->date('currentbatterycapacitydate')->nullable();
-            $table->date('diskperformancedate')->nullable();
             $table->string('spec')->nullable();
             $table->string('status')->nullable();
             $table->string('picture', 300)->nullable();

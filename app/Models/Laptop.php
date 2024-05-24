@@ -17,9 +17,6 @@ class Laptop extends Model
         'fullbatterycapacity',
         'currentbatterycapacity',
         'diskperformance',
-        'fullbatterycapacitydate',
-        'currentbatterycapacitydate',
-        'diskperformancedate',
         'spec',
         'status',
         'picture'
