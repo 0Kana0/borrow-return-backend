@@ -17,6 +17,8 @@ services:
         volumes:
             - '.:/var/www/html'
             - /path/on/host:/path/in/container
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
         networks:
             - sail
 
