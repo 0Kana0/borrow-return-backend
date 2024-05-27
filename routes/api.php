@@ -42,7 +42,7 @@ Route::put('/borrowdevicearrays', [BorrowDeviceController::class, 'updateArray']
 Route::get('/laptops', [LaptopController::class, 'index']);
 Route::get('/laptops/{id}', [LaptopController::class, 'show']);
 Route::post('/laptops', [LaptopController::class, 'store']);
-Route::post('/laptops/{id}', [LaptopController::class, 'update']);
+Route::put('/laptops/{id}', [LaptopController::class, 'update']);
 Route::post('/laptopimages/{id}', [LaptopController::class, 'updateImage']);
 Route::delete('/laptops/{id}', [LaptopController::class, 'destroy']);
 
