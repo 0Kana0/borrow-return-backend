@@ -42,8 +42,8 @@ Route::put('/borrowdevicearrays', [BorrowDeviceController::class, 'updateArray']
 Route::get('/laptops', [LaptopController::class, 'index']);
 Route::get('/laptops/{id}', [LaptopController::class, 'show']);
 Route::post('/laptops', [LaptopController::class, 'store']);
-Route::post('/laptops/{id}', [LaptopController::class, 'update']);
-Route::post('/laptopnoimages/{id}', [LaptopController::class, 'updateNoImage']);
+Route::put('/laptops/{id}', [LaptopController::class, 'update']);
+Route::put('/laptopnoimages/{id}', [LaptopController::class, 'updateNoImage']);
 Route::delete('/laptops/{id}', [LaptopController::class, 'destroy']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
