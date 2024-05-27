@@ -134,7 +134,7 @@ class LaptopController extends Controller
         }
     }
 
-    public function updateNoImage(UpdateLaptopNoImageRequest $request, string $id)
+    public function updateImage(UpdateLaptopNoImageRequest $request, string $id)
     {
         try {
             $laptopCheck = Laptop::find($id);
