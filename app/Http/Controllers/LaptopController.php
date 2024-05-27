@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Laptop\StoreLaptopRequest;
+use App\Http\Requests\Laptop\UpdateLaptopNoImageRequest;
 use App\Http\Requests\Laptop\UpdateLaptopRequest;
 use App\Models\Laptop;
 use Illuminate\Http\Request;
@@ -104,20 +105,47 @@ class LaptopController extends Controller
             $laptopCheck = Laptop::find($id);
 
             if ($laptopCheck) {
+                $laptop = Laptop::find($id)->update([
+                    'serial_number' => $data['serial_number'],
+                    'brand' => $data['brand'],
+                    'warrantyexpirationdate' => $data['warrantyexpirationdate'],
+                    'fullbatterycapacity' => $data['fullbatterycapacity'],
+                    'currentbatterycapacity' => $data['currentbatterycapacity'],
+                    'diskperformance' => $data['diskperformance'],
+                    'spec' => $data['spec'],
+                    'status' => $data['status'],
+                ]);
+
+                $response = [
+                    'message' => 'Update Laptop Success',
+                    'data' => $laptop
+                ];
+
+            } else {
+                $response = [
+                    'message' => 'Update Laptop Fail, Id Not Found',
+                ];
+            }
+
+            return response($response);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response($th);
+        }
+    }
+
+    public function updateNoImage(UpdateLaptopNoImageRequest $request, string $id)
+    {
+        try {
+            $laptopCheck = Laptop::find($id);
+
+            if ($laptopCheck) {
                 if($request->has('picture')) {
                     foreach($request->file('picture') as $image) {
                         $filename = Str::random(32).".".$image->getClientOriginalExtension();
                         $image->move('uploads/', $filename);
         
                         $laptop = Laptop::find($id)->update([
-                            'serial_number' => $data['serial_number'],
-                            'brand' => $data['brand'],
-                            'warrantyexpirationdate' => $data['warrantyexpirationdate'],
-                            'fullbatterycapacity' => $data['fullbatterycapacity'],
-                            'currentbatterycapacity' => $data['currentbatterycapacity'],
-                            'diskperformance' => $data['diskperformance'],
-                            'spec' => $data['spec'],
-                            'status' => $data['status'],
                             'picture' => $filename,
                         ]);
                     }
