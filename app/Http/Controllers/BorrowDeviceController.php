@@ -98,6 +98,7 @@ class BorrowDeviceController extends Controller
                         'device_name' => $data['device_name'],
                         'serial_number' => $data['serial_number'],
                         'return_status' => $data['return_status'],
+                        'return_date' => null,
                     ]);
                 }
 
@@ -135,6 +136,7 @@ class BorrowDeviceController extends Controller
                         'device_name' => $data['device_name'],
                         'serial_number' => $data['serial_number'],
                         'return_status' => $data['return_status'],
+                        'return_date' => null,
                     ]);
                 }
 
