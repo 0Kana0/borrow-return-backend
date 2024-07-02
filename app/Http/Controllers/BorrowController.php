@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Borrow\StoreBorrowRequest;
 use App\Http\Requests\Borrow\UpdateBorrowRequest;
 use App\Models\Borrow;
+use App\Models\BorrowDevice;
+use App\Models\Laptop;
 use Illuminate\Http\Request;
 
 class BorrowController extends Controller
@@ -19,11 +21,25 @@ class BorrowController extends Controller
                             ->select('borrows.*', 'branches.branch_name')
                             ->get();
 
+            $borrow->transform(function($item, $key) {
+                $borrowDevice = BorrowDevice::where('borrow_id', $item['id'])
+                            ->where(function ($query) {
+                                $query->where('device_name', 'Laptop')
+                                      ->orWhere('device_name', 'เปลี่ยน Laptop');
+                            })
+                            ->latest('created_at')
+                            ->first();
+
+                $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
+
+                $item->laptop_id = $laptop["id"];
+                return $item;
+            });
+
             $response = [
                 'message' => 'Get All Borrow Success',
-                'length' => count($borrow),
                 'data' => $borrow
-            ];
+            ];    
 
             return response($response);
         } catch (\Throwable $th) {
@@ -70,7 +86,20 @@ class BorrowController extends Controller
         try {
             $borrow = Borrow::join('branches', 'borrows.branch_id', '=', 'branches.id')
                             ->select('borrows.*', 'branches.branch_name')
-                            ->find($id);
+                            ->where('borrows.id', $id)
+                            ->first();
+
+            $borrowDevice = BorrowDevice::where('borrow_id', $id)
+                                        ->where(function ($query) {
+                                            $query->where('device_name', 'Laptop')
+                                        ->orWhere('device_name', 'เปลี่ยน Laptop');
+                                        })
+                                        ->latest('created_at')
+                                        ->first();
+
+            $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
+            
+            $borrow->laptop_id = $laptop['id'];
 
             $response = [
                 'message' => 'Get Borrow Success',
@@ -126,6 +155,7 @@ class BorrowController extends Controller
     public function destroy(string $id)
     {
         try {
+            $borrowDevice = BorrowDevice::where('borrow_id', $id)->delete();
             $borrow = Borrow::destroy($id);
 
             $response = [

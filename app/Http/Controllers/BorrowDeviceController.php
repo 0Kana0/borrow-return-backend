@@ -6,6 +6,7 @@ use App\Http\Requests\BorrowDevice\StoreBorrowDeviceArrayRequest;
 use App\Http\Requests\BorrowDevice\UpdateBorrowDeviceArrayRequest;
 use App\Http\Requests\BorrowDevice\UpdateBorrowDeviceRequest;
 use App\Models\BorrowDevice;
+use App\Models\Laptop;
 use Illuminate\Http\Request;
 
 class BorrowDeviceController extends Controller
@@ -62,6 +63,17 @@ class BorrowDeviceController extends Controller
     {
         try {
             $borrowDevice = BorrowDevice::where('borrow_id', $borrow_id)->get();
+
+            $borrowDevice->transform(function($item, $key) {
+                if ($item["device_name"] == "Laptop" || $item["device_name"] == "เปลี่ยน Laptop") {
+                    $laptop = Laptop::where('serial_number', $item['serial_number'])->first();;
+                
+                    $item->laptop_id = $laptop['id'];
+                } else {
+                    $item->laptop_id = null;
+                }
+                return $item;
+            });
 
             $response = [
                 'message' => 'Get BorrowDevice From Borrow_id Success',
@@ -160,5 +172,18 @@ class BorrowDeviceController extends Controller
      */
     public function destroy(string $id)
     {
+        try {
+            $borrowDevice = BorrowDevice::destroy($id);
+
+            $response = [
+                'message' => 'Delete Borrow Device Success',
+                'data' => $borrowDevice
+            ];
+
+            return response($response);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response($th);
+        }
     }
 }

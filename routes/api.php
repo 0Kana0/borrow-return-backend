@@ -37,6 +37,8 @@ Route::get('/borrowdevicesbyborrowid/{id}', [BorrowDeviceController::class, 'sho
 Route::post('/borrowdevicearrays', [BorrowDeviceController::class, 'storeArray']);
 Route::put('/borrowdevices/{id}', [BorrowDeviceController::class, 'update']);
 Route::put('/borrowdevicearrays', [BorrowDeviceController::class, 'updateArray']);
+Route::delete('/borrowdevices/{id}', [BorrowDeviceController::class, 'destroy']);
+
 
 // laptop CRUD
 Route::get('/laptops', [LaptopController::class, 'index']);
