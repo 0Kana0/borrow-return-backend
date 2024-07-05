@@ -66,9 +66,13 @@ class BorrowDeviceController extends Controller
 
             $borrowDevice->transform(function($item, $key) {
                 if ($item["device_name"] == "Laptop" || $item["device_name"] == "เปลี่ยน Laptop") {
-                    $laptop = Laptop::where('serial_number', $item['serial_number'])->first();;
+                    if ($item['serial_number'] !== null) {
+                        $laptop = Laptop::where('serial_number', $item['serial_number'])->first();;
                 
-                    $item->laptop_id = $laptop['id'];
+                        $item->laptop_id = $laptop['id'];
+                    } else {
+                        $item->laptop_id = null;
+                    }
                 } else {
                     $item->laptop_id = null;
                 }

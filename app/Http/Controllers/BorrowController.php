@@ -31,10 +31,15 @@ class BorrowController extends Controller
                                             ->first();
 
                 if ($borrowDevice) {
-                    $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();
+                    if ($borrowDevice['serial_number'] !== null) {
+                        $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();
 
-                    $item->laptop_id = $laptop["id"];
-                    return $item;
+                        $item->laptop_id = $laptop["id"];
+                        return $item;
+                    } else {
+                        $item->laptop_id = null;
+                        return $item;
+                    }                    
                 } else {
                     $item->laptop_id = null;
                     return $item;
@@ -103,9 +108,13 @@ class BorrowController extends Controller
                                         ->first();
 
             if ($borrowDevice) {
-                $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
+                if ($borrowDevice['serial_number'] !== null) {
+                    $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
             
-                $borrow->laptop_id = $laptop['id'];
+                    $borrow->laptop_id = $laptop['id'];
+                } else {
+                    $borrow->laptop_id = null;
+                }
             } else {
                 $borrow->laptop_id = null;
             }
