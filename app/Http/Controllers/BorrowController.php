@@ -23,17 +23,22 @@ class BorrowController extends Controller
 
             $borrow->transform(function($item, $key) {
                 $borrowDevice = BorrowDevice::where('borrow_id', $item['id'])
-                            ->where(function ($query) {
-                                $query->where('device_name', 'Laptop')
-                                      ->orWhere('device_name', 'เปลี่ยน Laptop');
-                            })
-                            ->latest('created_at')
-                            ->first();
+                                            ->where(function ($query) {
+                                                $query->where('device_name', 'Laptop')
+                                                    ->orWhere('device_name', 'เปลี่ยน Laptop');
+                                            })
+                                            ->latest('created_at')
+                                            ->first();
 
-                $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
+                if ($borrowDevice) {
+                    $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();
 
-                $item->laptop_id = $laptop["id"];
-                return $item;
+                    $item->laptop_id = $laptop["id"];
+                    return $item;
+                } else {
+                    $item->laptop_id = null;
+                    return $item;
+                }
             });
 
             $response = [
@@ -97,9 +102,14 @@ class BorrowController extends Controller
                                         ->latest('created_at')
                                         ->first();
 
-            $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
+            if ($borrowDevice) {
+                $laptop = Laptop::where('serial_number', $borrowDevice['serial_number'])->first();;
             
-            $borrow->laptop_id = $laptop['id'];
+                $borrow->laptop_id = $laptop['id'];
+            } else {
+                $borrow->laptop_id = null;
+            }
+            
 
             $response = [
                 'message' => 'Get Borrow Success',
