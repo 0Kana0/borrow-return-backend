@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('employee_phone')->nullable();
             $table->string('employee_rank')->nullable();
             $table->string('employee_dept')->nullable();
-            $table->integer('branch_id');
+            $table->string('branch_name')->nullable();
             $table->timestamps();
         });
     }

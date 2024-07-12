@@ -13,9 +13,4 @@ class Branch extends Model
         'id',
         'branch_name'
     ];
-
-    // Function สำหรับส่ง Id ไปยัง Database ที่ต้องการจะ Join
-    public function borrows() {
-        return $this->hasMany(Borrow::class, 'branch_id', 'id');
-    }
 }

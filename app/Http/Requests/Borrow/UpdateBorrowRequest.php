@@ -27,7 +27,7 @@ class UpdateBorrowRequest extends FormRequest
             'employee_phone' => ['required', 'numeric'],
             'employee_rank' => ['required'],
             'employee_dept' => ['required'],
-            'branch_id' => ['required', 'numeric']
+            'branch_name' => ['required']
         ];
     }
 }
